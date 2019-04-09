@@ -6,13 +6,13 @@ The slides are found here in PDF version. A live version is shared on [google do
 
 ## Demo
 
-The demo is self-contained and minimal. The only requirements to run the demo cluster are Docker and docker-compose.
+The demo is self-contained and minimal. The only requirements to run the demo are [Docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/).
 
 ### Run the Demo
 
 * `cd demo`
 * `./start-and-watch.sh`
-* `./demo.sh` - requires `pv` in order for demo-magic to work.
+* `./start-demo.sh`
 * Optional. Use `./cleanup.sh` to fully clean up and delete the demo cluster
 
 ### Tools
