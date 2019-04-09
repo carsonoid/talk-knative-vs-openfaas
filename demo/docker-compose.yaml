@@ -1,0 +1,46 @@
+version: '3'
+services:
+  server:
+    image: rancher/k3s:v0.2.0
+    command: server --disable-agent
+    environment:
+    - K3S_CLUSTER_SECRET=eK7rlyG9ZfjlDH4t5
+    - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig.yaml
+    - K3S_KUBECONFIG_MODE=666
+    volumes:
+    - k8s:/var/lib/rancher/k3s
+    - .:/output
+    ports:
+    - 6443:6443
+
+  node:
+    image: rancher/k3s:v0.2.0
+    tmpfs:
+    - /run
+    - /var/run
+    privileged: true
+    volumes:
+    - ./preload-images:/var/lib/rancher/k3s/agent/images/
+    depends_on:
+    - server
+    environment:
+    - K3S_URL=https://server:6443
+    - K3S_CLUSTER_SECRET=eK7rlyG9ZfjlDH4t5
+
+  openfaas:
+    build:
+      context: .
+      dockerfile: Dockerfile-openfaas
+    network_mode: host
+    depends_on:
+    - server
+    volumes:
+    - .:/openfaas
+    - ./kubeconfig.yaml:/root/.kube/config:ro
+    working_dir: /openfaas
+    entrypoint:
+    - bash
+    - ./openfaas-bootstrap.sh
+
+volumes:
+  k8s: {}

@@ -1,0 +1,4 @@
+template
+kubeconfig.yaml
+preload-images/*.tar
+build
