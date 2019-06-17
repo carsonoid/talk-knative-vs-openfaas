@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get pv for demo
+apk update && apk add pv
+
 # Wait for cluster to be ready
 until kubectl get nodes &> /dev/null; do sleep 1; done
 
@@ -19,12 +22,14 @@ kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/na
 helm repo add openfaas https://openfaas.github.io/faas-netes/
 
 # get latest chart version and install
-helm repo update && helm upgrade openfaas --install openfaas/openfaas \
+helm repo update && helm upgrade --version 4.3.0 openfaas --install openfaas/openfaas \
     --namespace openfaas  \
     --set functionNamespace=openfaas-fn \
     --set operator.create=true \
     --set faasnetes.imagePullPolicy=IfNotPresent \
-    --set ingress.enabled=true
+    --set ingress.enabled=true \
+    --set basic_auth=false \
+    --set basicAuthPlugin.replicas=0
 
 # Keep the container up, but die quickly
 while :; do sleep 3; done

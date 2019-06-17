@@ -29,3 +29,4 @@ p "# Proxy connection into the faas gateway release 1 pod, Control-C to kill and
 p "# Access the forwarded service via http://127.0.0.1:9999"
 pe "kubectl -n openfaas port-forward svc/gateway 9999:8080"
 
+p "# Demo done! Feel free to use continue to use kubectl or faas-cli. Or run ./cleanup.sh to delete everything"
